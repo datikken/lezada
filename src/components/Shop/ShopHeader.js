@@ -1,7 +1,15 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { MdViewComfy, MdApps, MdList } from "react-icons/md";
+import Select from 'react-select'
 import { IoMdFunnel } from "react-icons/io";
 import { setActiveLayout } from "../../lib/product";
+
+const options = [
+  { value: 'default', label: 'Default' },
+  { value: 'priceHighToLow', label: 'Price - High to Low' },
+  { value: 'priceLowToHigh', label: 'Price - Low to High' }
+]
+
 const ShopHeader = ({
   shopTopFilterStatus,
   setShopTopFilterStatus,
@@ -12,6 +20,11 @@ const ShopHeader = ({
   layoutClass,
   listMode
 }) => {
+
+  const handleInputChange = (newValue) => {
+    getFilterSortParams("filterSort", newValue.value)
+  };
+
   return (
     <div className="shop-header">
       <Container className={layoutClass ? layoutClass : ""}>
@@ -23,15 +36,10 @@ const ShopHeader = ({
           <Col md={7}>
             <div className="shop-header__filter-icons justify-content-center justify-content-md-end">
               <div className="single-icon filter-dropdown">
-                <select
-                  onChange={(e) =>
-                    getFilterSortParams("filterSort", e.target.value)
-                  }
-                >
-                  <option value="default">Default</option>
-                  <option value="priceHighToLow">Price - High to Low</option>
-                  <option value="priceLowToHigh">Price - Low to High</option>
-                </select>
+                <Select
+                  onChange={e => handleInputChange(e)}
+                  options={options}
+                />
               </div>
 
               <div className="single-icon grid-icons d-none d-lg-block">
